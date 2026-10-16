@@ -1,0 +1,1196 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#2c4a6e">
+<title>着物仕立ナビ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap">
+<style>
+:root{--nav-bg:#ffffff;--nav-fg:#22252b;--nav-line:#dcdad4;--nav-accent:#2c4a6e;--page:#f6f5f2;
+ box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--nav-bg:#1f232a;--nav-fg:#e9e8e4;--nav-line:#343943;--nav-accent:#8fb0d9;--page:#16181d;color-scheme:dark}}
+:root[data-theme="dark"]{--nav-bg:#1f232a;--nav-fg:#e9e8e4;--nav-line:#343943;--nav-accent:#8fb0d9;--page:#16181d;color-scheme:dark}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 56px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--page);font-family:"Zen Kaku Gothic New","Hiragino Sans","Yu Gothic",system-ui,sans-serif}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--nav-bg);z-index:30}
+#nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--nav-bg);border-bottom:1px solid var(--nav-line);display:flex;gap:6px;padding:8px 12px;height:56px;align-items:center}
+#nav .brand{font-family:"Shippori Mincho",serif;font-weight:700;color:var(--nav-fg);font-size:1.05rem;letter-spacing:.06em;margin-right:auto;white-space:nowrap}
+#nav button{font:inherit;font-weight:700;font-size:.9rem;border:1px solid var(--nav-line);background:transparent;color:var(--nav-fg);padding:8px 14px;border-radius:999px;cursor:pointer;white-space:nowrap}
+#nav button[aria-selected="true"]{background:var(--nav-accent);border-color:var(--nav-accent);color:#fff}
+#nav button:focus-visible{outline:2px solid var(--nav-accent);outline-offset:2px}
+@media (max-width:480px){#nav .brand{display:none}#nav{justify-content:center}#nav button{flex:1}}
+[hidden]{display:none!important}
+/* ===== 仕立料金ナビ ===== */
+#p1{
+  --bg:#f6f5f2; --surface:#ffffff; --fg:#22252b; --muted:#6b6f78; --line:#dcdad4;
+  --ai:#2c4a6e;        
+  --ai-soft:#e6edf5;
+  --kaigai:#1f7a8c; --kaigai-soft:#e3f3f5;
+  --kokunai:#a23a62; --kokunai-soft:#f8e8ef;
+  --warn:#9a6b00;
+  --display:"Shippori Mincho","Hiragino Mincho ProN","Yu Mincho",serif;
+  --body:"Zen Kaku Gothic New","Hiragino Sans","Yu Gothic",system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){#p1{
+  --bg:#16181d; --surface:#1f232a; --fg:#e9e8e4; --muted:#9a9ea7; --line:#343943;
+  --ai:#8fb0d9; --ai-soft:#25313f;
+  --kaigai:#6cc3d2; --kaigai-soft:#1b3237;
+  --kokunai:#e58bb0; --kokunai-soft:#3a2230; --warn:#e0b04a; color-scheme:dark}}
+#p1 *{box-sizing:border-box}
+#p1{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.6;padding-inline:16px;padding-block:24px 48px}
+#p1 .wrap{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:28px}
+#p1 header h1{font-family:var(--display);font-size:1.9rem;margin:0;letter-spacing:.06em;text-wrap:balance}
+#p1 header p{margin:4px 0 0;color:var(--muted);font-size:.85rem}
+#p1 .step-label{font-size:.78rem;letter-spacing:.12em;color:var(--muted);margin:0 0 10px;font-weight:700}
+#p1 .chips{display:flex;flex-wrap:wrap;gap:8px}
+#p1 .chip{font:inherit;font-weight:500;border:1px solid var(--line);background:var(--surface);color:var(--fg);padding:9px 16px;border-radius:6px;cursor:pointer;transition:background .12s,border-color .12s}
+#p1 .chip:hover{border-color:var(--ai)}
+#p1 .chip:focus-visible{outline:2px solid var(--ai);outline-offset:2px}
+#p1 .chip[aria-pressed="true"]{background:var(--ai);border-color:var(--ai);color:var(--surface)}
+#p1 .cat .chip{font-family:var(--display);font-size:1.05rem;font-weight:700;padding:10px 20px}
+#p1 .sub{font-size:.75rem;color:var(--muted);margin:14px 0 6px}
+#p1 .result{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:22px;display:flex;flex-direction:column;gap:18px}
+#p1 .result h2{font-family:var(--display);font-size:1.5rem;margin:0;display:flex;flex-wrap:wrap;align-items:baseline;gap:10px}
+#p1 .result h2 small{font-family:var(--body);font-size:.8rem;color:var(--muted);font-weight:400}
+#p1 .totals{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+#p1 .tot{border-radius:8px;padding:14px 16px;min-width:0}
+#p1 .tot.k1{background:var(--kaigai-soft)}
+#p1 .tot.k2{background:var(--kokunai-soft)}
+#p1 .tot .lab{font-size:.8rem;font-weight:700;letter-spacing:.08em}
+#p1 .tot.k1 .lab{color:var(--kaigai)}
+#p1 .tot.k2 .lab{color:var(--kokunai)}
+#p1 .tot .val{font-size:2rem;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.2;margin-top:2px}
+#p1 .tot .val .yen{font-size:1rem;margin-left:2px;font-weight:500}
+#p1 .tot .val .tax{font-size:.72rem;font-weight:500;color:var(--muted);margin-left:6px}
+#p1 .tot .incl{font-size:.95rem;font-variant-numeric:tabular-nums;margin-top:4px;padding-top:6px;border-top:1px solid var(--line)}
+#p1 .tot .incl b{font-size:1.25rem}
+#p1 .tot .val.na{font-size:1.1rem;color:var(--muted);font-weight:500}
+#p1 .guard{display:flex;justify-content:space-between;align-items:center;gap:12px;border-top:1px dashed var(--line);padding-top:14px;font-size:.9rem}
+#p1 .guard b{font-variant-numeric:tabular-nums;font-size:1.05rem}
+#p1 .guard span{color:var(--muted)}
+#p1 details{font-size:.88rem}
+#p1 summary{cursor:pointer;color:var(--ai);font-weight:500}
+#p1 .tbl{overflow-x:auto;margin-top:10px}
+#p1 table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}
+#p1 th,#p1 td{padding:6px 10px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+#p1 th:first-child,#p1 td:first-child{text-align:left}
+#p1 th{font-weight:500;color:var(--muted);font-size:.78rem}
+#p1 tr.sum td{font-weight:700;border-bottom:none}
+#p1 .note{font-size:.8rem;color:var(--muted);margin:0}
+#p1 .warn{font-size:.8rem;color:var(--warn);margin:0}
+#p1 .empty{color:var(--muted);text-align:center;padding:28px 12px;border:1px dashed var(--line);border-radius:10px}
+#p1 footer{font-size:.75rem;color:var(--muted)}
+@media (max-width:480px){#p1 .tot .val{font-size:1.55rem}
+#p1 .result{padding:16px}}
+@media (prefers-reduced-motion:reduce){#p1 *{transition:none!important}}
+/* ===== 国際和服寸法換算帖 ===== */
+#p2{
+    --kinari:#FFF8EC;      
+    --kinari-deep:#F6E4B8; 
+    --sumi:#2A2010;        
+    --ai:#1E3FA0;          
+    --koai:#152165;        
+    --shu:#E0203F;         
+    --yamabuki:#F0A400;    
+    --kin:#E8B923;         
+    --paper-line: rgba(224,32,63,0.08);
+    --grad-main: linear-gradient(120deg, var(--koai) 0%, var(--ai) 45%, var(--shu) 100%);
+    --grad-gold: linear-gradient(120deg, var(--yamabuki), var(--shu));
+  }
+#p2 *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+#p2{margin:0;padding:0; -webkit-text-size-adjust:100%; touch-action:manipulation;}
+#p2{
+    background:
+      radial-gradient(circle at 15% 8%, rgba(224,32,63,0.10), transparent 40%),
+      radial-gradient(circle at 85% 18%, rgba(30,63,160,0.12), transparent 42%),
+      repeating-linear-gradient(0deg, var(--paper-line) 0px, var(--paper-line) 1px, transparent 1px, transparent 28px),
+      repeating-linear-gradient(90deg, var(--paper-line) 0px, var(--paper-line) 1px, transparent 1px, transparent 28px),
+      var(--kinari);
+    color:var(--sumi);
+    font-family:'Zen Kaku Gothic New', sans-serif;
+    min-height:100vh;
+    padding:0 calc(16px + env(safe-area-inset-right)) 60px calc(16px + env(safe-area-inset-left));
+    padding-top:env(safe-area-inset-top);
+  }
+#p2 .wrap{max-width:1180px;margin:0 auto;}
+#p2 header{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:flex-end;
+    justify-content:space-between;
+    gap:16px;
+    background:var(--grad-main);
+    border-radius:0 0 22px 22px;
+    padding:34px 28px 24px;
+    margin:0 -16px 28px;
+    box-shadow:0 12px 30px -14px rgba(21,33,101,0.55);
+    position:relative;
+    overflow:hidden;
+  }
+#p2 header::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+      repeating-linear-gradient(45deg, rgba(255,255,255,0.06) 0 2px, transparent 2px 22px);
+    pointer-events:none;
+  }
+#p2 .title-block{ position:relative; z-index:1; }
+#p2 .title-block .eyebrow{
+    font-size:12px;
+    letter-spacing:0.4em;
+    color:var(--yamabuki);
+    font-weight:700;
+    margin:0 0 8px;
+  }
+#p2 h1{
+    font-family:'Shippori Mincho', serif;
+    font-size:clamp(30px,4.4vw,46px);
+    margin:0;
+    color:#fff;
+    font-weight:700;
+    letter-spacing:0.04em;
+    text-shadow:0 3px 14px rgba(0,0,0,0.25);
+  }
+#p2 .subtitle{
+    font-size:13.5px;
+    color:#FDEEDD;
+    margin-top:10px;
+    max-width:520px;
+    line-height:1.7;
+  }
+#p2 .stamp{
+    font-family:'Shippori Mincho', serif;
+    font-size:13px;
+    color:var(--koai);
+    background:var(--grad-gold);
+    border:none;
+    padding:8px 18px;
+    letter-spacing:0.2em;
+    white-space:nowrap;
+    transform:rotate(-3deg);
+    align-self:center;
+    border-radius:4px;
+    font-weight:700;
+    box-shadow:0 6px 16px -6px rgba(224,32,63,0.6);
+    position:relative;
+    z-index:1;
+  }
+#p2 .grid{
+    display:grid;
+    grid-template-columns:360px 1fr;
+    gap:24px;
+    padding-top:6px;
+  }
+@media (max-width:880px){#p2 .grid{grid-template-columns:1fr;}}
+#p2 .card{
+    background:#FFFDF7;
+    border:1px solid var(--kinari-deep);
+    border-radius:14px;
+    box-shadow:0 10px 26px -18px rgba(21,33,101,0.5);
+    padding:22px 22px 26px;
+    position:relative;
+    overflow:hidden;
+  }
+#p2 .card::before{
+    content:"";
+    position:absolute;
+    top:0; left:0; right:0;
+    height:5px;
+    background:var(--grad-gold);
+  }
+#p2 .card::after{
+    content:"";
+    position:absolute;
+    top:10px;left:10px;right:10px;bottom:10px;
+    border:1px solid rgba(224,32,63,0.12);
+    border-radius:8px;
+    pointer-events:none;
+  }
+#p2 .card h2{
+    font-family:'Shippori Mincho', serif;
+    font-size:17px;
+    margin:0 0 4px;
+    color:var(--koai);
+    display:flex;
+    align-items:baseline;
+    gap:8px;
+  }
+#p2 .card h2 .no{
+    font-size:12px;
+    color:var(--shu);
+    font-weight:700;
+    letter-spacing:0.1em;
+  }
+#p2 .card .lead{
+    font-size:12px;
+    color:#736c5f;
+    margin:0 0 18px;
+    line-height:1.6;
+  }
+#p2 .system-tabs{
+    display:flex;
+    flex-wrap:wrap;
+    gap:0;
+    margin-bottom:12px;
+    border:1px solid var(--ai);
+    border-radius:2px;
+    overflow:hidden;
+  }
+#p2 .system-tabs{ border-radius:10px; }
+#p2 .system-tabs button{
+    flex:1 1 33.33%;
+    font-family:'Zen Kaku Gothic New', sans-serif;
+    font-weight:700;
+    font-size:12.5px;
+    line-height:1.4;
+    background:#fff;
+    border:none;
+    border-right:1px solid var(--kinari-deep);
+    border-bottom:1px solid var(--kinari-deep);
+    color:var(--ai);
+    padding:9px 4px 8px;
+    min-height:66px;
+    cursor:pointer;
+    -webkit-user-select:none;
+    user-select:none;
+    transition:transform .12s ease, background .15s ease;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+  }
+#p2 .flag-icon{
+    width:27px;
+    height:19px;
+    display:block;
+    margin:0 auto 5px;
+    border-radius:3px;
+    box-shadow:0 0 0 1px rgba(0,0,0,0.15), 0 2px 5px -2px rgba(0,0,0,0.35);
+    flex-shrink:0;
+  }
+#p2 .system-tabs button .native{
+    display:inline-block;
+    font-size:9.5px;
+    font-weight:400;
+    letter-spacing:0.01em;
+    opacity:0.75;
+  }
+#p2 .system-tabs button:last-child{border-right:none;}
+#p2 .system-tabs button:nth-last-child(-n+3){border-bottom:none;}
+#p2 .system-tabs button.active{
+    background:var(--grad-main);
+    color:#fff;
+    box-shadow:inset 0 -3px 0 var(--yamabuki);
+  }
+#p2 .preset-hint{
+    font-size:11px;
+    color:#8a7a5a;
+    margin:-4px 0 16px;
+    line-height:1.6;
+  }
+#p2 .presets{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-bottom:20px;
+  }
+#p2 .presets button{
+    font-family:'Zen Kaku Gothic New', sans-serif;
+    font-weight:700;
+    font-size:13.5px;
+    background:var(--kinari);
+    border:1.5px solid var(--ai);
+    color:var(--ai);
+    padding:10px 14px;
+    min-height:44px;
+    border-radius:20px;
+    cursor:pointer;
+    transition:transform .12s ease, box-shadow .12s ease, background .15s ease;
+    -webkit-user-select:none;
+    user-select:none;
+  }
+#p2 .presets button:hover{background:var(--ai);color:#fff; transform:translateY(-1px);}
+#p2 .presets button.active{
+    background:var(--grad-main);
+    border-color:transparent;
+    color:#fff;
+    box-shadow:0 6px 14px -6px rgba(224,32,63,0.55);
+    transform:translateY(-1px);
+  }
+#p2 label{
+    display:block;
+    font-size:12.5px;
+    font-weight:700;
+    color:var(--koai);
+    margin:14px 0 6px;
+    letter-spacing:0.03em;
+  }
+#p2 label .unit{font-weight:400;color:#8a7a5a;font-size:11px;}
+#p2 input[type=number]{
+    width:100%;
+    font-family:'Zen Kaku Gothic New', sans-serif;
+    font-size:17px;
+    font-weight:700;
+    padding:9px 10px;
+    border:1.5px solid var(--kinari-deep);
+    border-radius:8px;
+    background:#fff;
+    color:var(--sumi);
+  }
+#p2 input[type=number]:focus{outline:2px solid var(--shu); outline-offset:1px;}
+#p2 .toggle-row{
+    display:flex;
+    gap:8px;
+    margin-top:6px;
+  }
+#p2 .toggle-row button{
+    flex:1;
+    font-family:'Zen Kaku Gothic New', sans-serif;
+    font-size:13px;
+    font-weight:700;
+    padding:11px 6px;
+    min-height:48px;
+    border:1.5px solid var(--kinari-deep);
+    border-radius:8px;
+    background:#fff;
+    color:#8a7a5a;
+    cursor:pointer;
+    -webkit-user-select:none;
+    user-select:none;
+    transition:transform .12s ease;
+  }
+#p2 .toggle-row button.active{
+    background:var(--grad-main);
+    border-color:transparent;
+    color:#fff;
+    box-shadow:0 6px 14px -6px rgba(21,33,101,0.5);
+  }
+#p2 .yuki-override{
+    margin-top:16px;
+    padding:12px;
+    background:var(--kinari);
+    border:1px dashed #b7ae94;
+  }
+#p2 .yuki-override label{margin-top:0;}
+#p2 .checkline{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-size:12.5px;
+    font-weight:700;
+    color:var(--koai);
+  }
+#p2 .checkline input{width:22px;height:22px;flex-shrink:0;}
+#p2 .checkline{cursor:pointer;padding:4px 0;}
+#p2 .checkline label{cursor:pointer;}
+#p2 .yuki-override input[type=number]{margin-top:8px;}
+#p2 .yuki-override .hint{font-size:11px;color:#8a8373;margin-top:6px;line-height:1.6;}
+#p2 .output-top{
+    display:grid;
+    grid-template-columns:1.1fr 1fr;
+    gap:20px;
+  }
+@media (max-width:1020px){#p2 .output-top{grid-template-columns:1fr;}}
+#p2 svg{width:100%;height:auto;display:block;}
+#p2 .diagram-frame{
+    background:
+      repeating-linear-gradient(0deg, rgba(30,63,160,0.06) 0, rgba(30,63,160,0.06) 1px, transparent 1px, transparent 20px),
+      repeating-linear-gradient(90deg, rgba(30,63,160,0.06) 0, rgba(30,63,160,0.06) 1px, transparent 1px, transparent 20px),
+      #fff;
+    border:1.5px solid var(--kinari-deep);
+    border-radius:10px;
+    padding:10px;
+  }
+#p2 table.result{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:4px;
+  }
+#p2 table.result th,#p2 table.result td{
+    text-align:left;
+    padding:9px 6px;
+    border-bottom:1px solid var(--kinari-deep);
+    font-size:13.5px;
+  }
+#p2 table.result th{
+    font-weight:700;
+    color:var(--koai);
+    width:34%;
+  }
+#p2 table.result td.val{
+    font-weight:900;
+    color:var(--shu);
+    font-size:18px;
+    white-space:nowrap;
+    text-shadow:0 1px 0 rgba(224,32,63,0.15);
+  }
+#p2 table.result td.shaku{
+    color:#8a8373;
+    font-size:12px;
+  }
+#p2 table.result td.tol{
+    color:#8a8373;
+    font-size:11.5px;
+  }
+#p2 .note-block{
+    margin-top:22px;
+    padding-top:16px;
+    border-top:1px dashed #b7ae94;
+    font-size:12px;
+    line-height:1.9;
+    color:#5b564d;
+  }
+#p2 .note-block b{color:var(--koai);}
+#p2 .note-block .warn{color:var(--shu);font-weight:700;}
+#p2 footer{
+    text-align:center;
+    margin-top:36px;
+    font-size:11px;
+    color:#9a927e;
+    letter-spacing:0.05em;
+  }
+#p2 .table-title{
+    font-family:'Shippori Mincho', serif;
+    font-size:14.5px;
+    color:var(--koai);
+    margin:18px 0 8px;
+    font-weight:700;
+  }
+#p2 .table-scroll{ overflow-x:auto; -webkit-overflow-scrolling:touch; }
+#p2 table.size-table{ width:100%; min-width:560px; border-collapse:collapse; }
+#p2 table.size-table th,#p2 table.size-table td{
+    padding:7px 6px;
+    font-size:12.5px;
+    text-align:center;
+    white-space:nowrap;
+    border-bottom:1px solid var(--kinari-deep);
+  }
+#p2 table.size-table th{ color:#fff; font-weight:700; background:var(--grad-main); }
+#p2 table.size-table td.dim{ font-weight:900; color:var(--shu); font-size:13.5px; }
+#p2 table.size-table td.active-row,#p2 table.size-table tr.active-row td{ background:#FFF3D6; }
+#p1,#p2{min-height:calc(100vh - 56px);overflow-x:hidden}
+#p1{padding-block:24px 48px}
+#p2{padding-top:0!important}
+
+</style>
+</head>
+<body>
+<nav id="nav" role="tablist" aria-label="アプリ切替">
+  <span class="brand">着物仕立ナビ</span>
+  <button type="button" role="tab" data-tab="p1" aria-selected="true">仕立料金</button>
+  <button type="button" role="tab" data-tab="p2" aria-selected="false">寸法換算</button>
+</nav>
+
+<main>
+<section id="p1" role="tabpanel">
+
+<div class="wrap">
+  <header>
+    <h1>仕立料金ナビ</h1>
+    <p>たんす屋バザール 仕立料金表（2026年6月版・税抜）より</p>
+  </header>
+
+  <section>
+    <p class="step-label">① 大別を選ぶ</p>
+    <div class="chips cat" id="cats" role="group" aria-label="大別"></div>
+  </section>
+
+  <section>
+    <p class="step-label">② 品名を選ぶ</p>
+    <div id="items"></div>
+  </section>
+
+  <section id="out" aria-live="polite"></section>
+
+  <footer>金額は税抜（税込は消費税10%で計算）。合計は内訳の金額を足し上げて計算しています。</footer>
+</div>
+
+
+</section>
+<section id="p2" role="tabpanel" hidden>
+
+<div class="wrap">
+
+  <header>
+    <div class="title-block">
+      <p class="eyebrow">和裁 割出 手帖</p>
+      <h1>洋装寸法 → 和裁寸法</h1>
+      <p class="subtitle">日本の号数だけでなく、US・UK・フランス・ドイツサイズからも「身丈・裄・袖丈・身幅」の目安寸法を割り出せます。あくまで概算です。お誂え（オーダー）の際は呉服店での実寸採寸をおすすめします。</p>
+    </div>
+    <div class="stamp">概算 早見帳</div>
+  </header>
+
+  <div class="grid">
+
+    <!-- INPUT CARD -->
+    <div class="card">
+      <h2><span class="no">01</span>寸法を入れる</h2>
+      <p class="lead">洋服のサイズ感からざっくり入力するか、実寸（cm）を直接入れてください。</p>
+
+      <div class="system-tabs" id="systemTabs">
+        <button data-sys="jp" class="active">
+          <svg class="flag-icon" viewBox="0 0 26 18"><rect width="26" height="18" fill="#fff"/><circle cx="13" cy="9" r="5.4" fill="#BC002D"/></svg>
+          号数<br><span class="native">(日本)</span>
+        </button>
+        <button data-sys="us">
+          <svg class="flag-icon" viewBox="0 0 26 18">
+            <rect width="26" height="18" fill="#B22234"/>
+            <rect y="1.38" width="26" height="1.38" fill="#fff"/>
+            <rect y="4.15" width="26" height="1.38" fill="#fff"/>
+            <rect y="6.92" width="26" height="1.38" fill="#fff"/>
+            <rect y="9.69" width="26" height="1.38" fill="#fff"/>
+            <rect y="12.46" width="26" height="1.38" fill="#fff"/>
+            <rect y="15.23" width="26" height="1.38" fill="#fff"/>
+            <rect width="11" height="9.7" fill="#3C3B6E"/>
+          </svg>
+          US<br><span class="native">(United States)</span>
+        </button>
+        <button data-sys="uk">
+          <svg class="flag-icon" viewBox="0 0 26 18">
+            <rect width="26" height="18" fill="#012169"/>
+            <path d="M0,0 L26,18 M26,0 L0,18" stroke="#fff" stroke-width="3.2"/>
+            <path d="M0,0 L26,18 M26,0 L0,18" stroke="#C8102E" stroke-width="1.2"/>
+            <path d="M13,0 V18 M0,9 H26" stroke="#fff" stroke-width="5.4"/>
+            <path d="M13,0 V18 M0,9 H26" stroke="#C8102E" stroke-width="2.4"/>
+          </svg>
+          UK<br><span class="native">(United Kingdom)</span>
+        </button>
+        <button data-sys="fr">
+          <svg class="flag-icon" viewBox="0 0 26 18">
+            <rect width="8.67" height="18" fill="#0055A4"/>
+            <rect x="8.67" width="8.67" height="18" fill="#fff"/>
+            <rect x="17.33" width="8.67" height="18" fill="#EF4135"/>
+          </svg>
+          フランス<br><span class="native">(France)</span>
+        </button>
+        <button data-sys="de">
+          <svg class="flag-icon" viewBox="0 0 26 18">
+            <rect width="26" height="6" fill="#000"/>
+            <rect y="6" width="26" height="6" fill="#DD0000"/>
+            <rect y="12" width="26" height="6" fill="#FFCE00"/>
+          </svg>
+          ドイツ<br><span class="native">(Deutschland)</span>
+        </button>
+        <button data-sys="intl">
+          <svg class="flag-icon" viewBox="0 0 26 18">
+            <rect width="26" height="18" fill="#fff"/>
+            <circle cx="13" cy="9" r="7.6" fill="none" stroke="#1E3FA0" stroke-width="1.2"/>
+            <ellipse cx="13" cy="9" rx="3" ry="7.6" fill="none" stroke="#1E3FA0" stroke-width="1"/>
+            <line x1="5.4" y1="9" x2="20.6" y2="9" stroke="#1E3FA0" stroke-width="1"/>
+            <line x1="6.6" y1="5.2" x2="19.4" y2="5.2" stroke="#1E3FA0" stroke-width="0.8"/>
+            <line x1="6.6" y1="12.8" x2="19.4" y2="12.8" stroke="#1E3FA0" stroke-width="0.8"/>
+          </svg>
+          国際<br><span class="native">(International)</span>
+        </button>
+      </div>
+      <div class="presets" id="presets"></div>
+      <p class="preset-hint" id="presetHint"></p>
+
+      <label>身長 <span class="unit">height / cm</span></label>
+      <input type="number" id="height" value="158" min="130" max="185" step="1" inputmode="decimal">
+
+      <label>ヒップ（お尻の一番太い部分）<span class="unit">hip / cm</span></label>
+      <input type="number" id="hip" value="90" min="75" max="120" step="1" inputmode="decimal">
+
+      <label>バスト <span class="unit">bust / cm・参考値</span></label>
+      <input type="number" id="bust" value="83" min="70" max="115" step="1" inputmode="decimal">
+
+      <label>袖丈のタイプ</label>
+      <div class="toggle-row" id="style-toggle">
+        <button data-style="casual" class="active">普段着・小紋 <br>(49cm目安)</button>
+        <button data-style="formal">訪問着・留袖 <br>(50cm目安)</button>
+      </div>
+
+      <div class="yuki-override">
+        <div class="checkline">
+          <input type="checkbox" id="yukiOverrideCheck">
+          <label style="margin:0;" for="yukiOverrideCheck">裄（首の付け根〜手首）を実測できた</label>
+        </div>
+        <input type="number" id="yukiOverride" value="65" min="55" max="80" step="0.5" inputmode="decimal" disabled>
+        <p class="hint">裄は体格の個人差が大きいため、可能であれば「首の後ろの付け根の骨〜肩山〜手首のくるぶし」を実測して入れると精度が上がります。</p>
+      </div>
+    </div>
+
+    <!-- OUTPUT CARD -->
+    <div class="card">
+      <h2><span class="no">02</span>割出結果</h2>
+      <p class="lead">下図は身頃を広げた状態の模式図です。数値は入力に応じて変わります。</p>
+
+      <div class="output-top">
+        <div class="diagram-frame">
+          <svg id="diagram" viewBox="0 0 420 460" xmlns="http://www.w3.org/2000/svg"></svg>
+        </div>
+
+        <div>
+          <table class="result">
+            <thead>
+              <tr><th>部位</th><th>目安寸法</th></tr>
+            </thead>
+            <tbody id="resultBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="note-block" id="noteBlock"></div>
+    </div>
+
+  </div>
+
+  <div class="card" style="margin-top:22px;">
+    <h2><span class="no">03</span>サイズ早見表（全サイズ）</h2>
+    <p class="lead">号数・US・UK・フランス・ドイツの代表的なサイズごとに、和裁寸法をまとめて計算した早見表です。US/UK/フランス/ドイツは身長の対応がないため、現在「01」に入力中の身長<b id="refHeightLabel">158</b>cmを参考身長として使っています。身長を変えると自動で再計算されます。</p>
+
+    <h3 class="table-title">JP 号数（身長込み）</h3>
+    <div class="table-scroll">
+      <table class="result size-table">
+        <thead>
+          <tr><th>サイズ</th><th>身長</th><th>身丈</th><th>裄</th><th>袖丈</th><th>前幅</th><th>後幅</th></tr>
+        </thead>
+        <tbody id="jpSizeBody"></tbody>
+      </table>
+    </div>
+
+    <h3 class="table-title">US ／ UK ／ フランス ／ ドイツ ／ 国際（参考身長で仮計算）</h3>
+    <div class="table-scroll">
+      <table class="result size-table">
+        <thead>
+          <tr><th>US</th><th>UK</th><th>FR</th><th>DE</th><th>国際</th><th>身丈＊</th><th>裄＊</th><th>袖丈</th><th>前幅</th><th>後幅</th></tr>
+        </thead>
+        <tbody id="intlSizeBody"></tbody>
+      </table>
+    </div>
+    <p class="hint">＊身丈・裄は参考身長を用いた仮の値です。実際の身長がわかる場合は「01」で身長を入力し直してください。前幅・後幅はヒップから決まるためサイズ固有の値です。ドイツ表記はフランス表記より2番小さい数字になります。</p>
+  </div>
+
+  <footer>寸法はすべて概算（目安）です — 尺貫法（鯨尺 1尺≒37.8cm）換算も参考として併記しています</footer>
+</div>
+
+
+</section>
+</main>
+
+<script>
+(function(){
+
+// 料金データ（PDF「仕立料金202606」より）
+const DATA = [
+ { cat:"袷きもの",
+   groups:[
+    { cols:["湯のし（湯通し）","胴裏","八掛（華）","八掛（紬）","紋入れ"],
+      rows:[
+       ["訪問着",38000,80000,[4000,14000,0,0,0],56000,98000,15000],
+       ["附下",38000,68000,[1500,14000,16000,0,0],69500,99500,15000],
+       ["色無地",35000,60000,[1500,14000,0,0,14000],64500,89500,15000],
+       ["小紋",35000,60000,[1500,14000,16000,0,0],66500,91500,15000],
+       ["紬",35000,60000,[3500,14000,0,18000,0],70500,95500,15000],
+       ["喪服",36000,60000,[2000,14000,0,0,12000],64000,88000,15000]
+      ]},
+    { cols:["湯のし（湯通し）","裏地（男通し裏）"],
+      rows:[
+       ["羽織",36000,66000,[1500,20000],57500,87500,13000],
+       ["道行",36000,66000,[1500,20000],57500,87500,13000],
+       ["道中着",36000,69000,[1500,20000],57500,90500,13000],
+       ["着物衿",36000,69000,[1500,20000],57500,90500,13000],
+       ["男物",38000,60000,[3500,50000],91500,113500,15000],
+       ["男羽織",36000,60000,[3500,40000],79500,103500,13000]
+      ]}
+   ]},
+ { cat:"単衣きもの", note:"※色無地は１ツ紋",
+   groups:[
+    { cols:["湯のし（湯通し）","衿裏（絽 3,800）","居敷当（夏 8,000）","背伏","紋入れ"],
+      rows:[
+       ["訪問着",38000,80000,[4000,3500,6000,800,0],52300,94300,15000],
+       ["附下",38000,68000,[1500,3500,6000,800,0],49800,79800,15000],
+       ["色無地",35000,60000,[1500,3500,6000,800,14000],60800,85800,15000],
+       ["小紋",35000,60000,[1500,3500,6000,800,0],46800,70300,15000],
+       ["紬",35000,60000,[3500,3500,6000,800,0],48800,70300,15000],
+       ["喪服",36000,60000,[1500,3500,6000,800,12000],59800,83800,15000],
+       ["男物",38000,60000,[3500,0,0,0,0],41500,63500,15000]
+      ]}
+   ]},
+ { cat:"礼装着", note:"※黒留袖は５ツ紋、色留袖は３ツ紋",
+   groups:[
+    { cols:["湯のし（湯通し）","胴裏","比翼地","紋入れ"],
+      rows:[
+       ["振袖",40000,95000,[4000,22000,0,0],66000,121000,16000],
+       ["黒留袖",43000,110000,[4000,14000,22000,12000],95000,162000,16000],
+       ["色留袖（比翼付）",43000,110000,[4000,14000,22000,28000],111000,178000,16000],
+       ["色留袖（比なし）",38000,80000,[4000,14000,0,28000],84000,126000,15000]
+      ]}
+   ]},
+ { cat:"長襦袢",
+   groups:[
+    { cols:["半衿","衿芯","居敷当","えもん抜き","通し胴裏"],
+      rows:[
+       ["振袖襦袢",23000,46000,[3500,800,4500,1000,0],32800,52300,13000],
+       ["長襦袢",23000,39000,[3500,800,4500,1000,0],32800,45300,13000],
+       ["男襦袢",23000,42000,[7000,800,0,0,30000],60800,72800,13000]
+      ]}
+   ]},
+ { cat:"帯類", obi:true, note:"帯類は国内仕立のみ（海外合計の設定なし）",
+   items:[
+    { name:"袋帯", guard:12000, opts:[
+       {label:"かがり仕立", parts:[["かがり仕立",5000]], total:5000},
+       {label:"芯入仕立＋帯芯（綿）", parts:[["芯入仕立",8000],["帯芯（綿）",3000]], total:11000},
+       {label:"芯入仕立＋帯芯（夏）", parts:[["芯入仕立",8000],["帯芯（夏）",6000]], total:14000}]},
+    { name:"九寸なごや帯", guard:12000, opts:[
+       {label:"芯入仕立＋帯芯（綿）", parts:[["芯入仕立",10000],["帯芯（綿）",3000]], total:13000},
+       {label:"芯入仕立＋帯芯（夏）", parts:[["芯入仕立",10000],["帯芯（夏）",6000]], total:16000},
+       {label:"平仕立＋帯芯（綿）", parts:[["平仕立",14000],["帯芯（綿）",3000]], total:17000},
+       {label:"おそめ仕立＋帯芯（綿）", parts:[["おそめ仕立",16000],["帯芯（綿）",3000]], total:19000}]},
+    { name:"八寸なごや帯", guard:12000, opts:[
+       {label:"かがり仕立", parts:[["かがり仕立",4500]], total:4500},
+       {label:"平仕立", parts:[["平仕立",5000]], total:5000}]},
+    { name:"半巾帯・角帯", guard:12000, opts:[
+       {label:"かがり仕立", parts:[["かがり仕立",4000]], total:4000},
+       {label:"芯入仕立＋帯芯（綿）", parts:[["芯入仕立",12000],["帯芯（綿）",3000]], total:15000}]}
+   ]}
+];
+
+const yen = n => n.toLocaleString("ja-JP");
+const $ = id => document.getElementById(id);
+let state = {cat:0, item:0, opt:0};
+try{ const s = JSON.parse(localStorage.getItem("shitate-nav")||"null"); if(s && DATA[s.cat]) state = {...state, ...s}; }catch(e){}
+function save(){ try{ localStorage.setItem("shitate-nav", JSON.stringify(state)); }catch(e){} }
+
+function itemsOf(c){
+  const d = DATA[c];
+  if(d.obi) return d.items.map(i=>({name:i.name, obi:i}));
+  const list=[]; d.groups.forEach(g=>g.rows.forEach(r=>list.push({name:r[0], row:r, cols:g.cols})));
+  return list;
+}
+
+function chip(label, pressed, onClick){
+  const b=document.createElement("button"); b.type="button"; b.className="chip";
+  b.textContent=label; b.setAttribute("aria-pressed", pressed?"true":"false");
+  b.addEventListener("click", onClick); return b;
+}
+
+function render(){
+  const cats=$("cats"); cats.innerHTML="";
+  DATA.forEach((d,i)=>cats.appendChild(chip(d.cat, i===state.cat, ()=>{state={cat:i,item:0,opt:0};save();render();})));
+
+  const list=itemsOf(state.cat);
+  if(state.item>=list.length) state.item=0;
+  const box=$("items"); box.innerHTML="";
+  const row=document.createElement("div"); row.className="chips"; row.setAttribute("role","group"); row.setAttribute("aria-label","品名");
+  list.forEach((it,i)=>row.appendChild(chip(it.name, i===state.item, ()=>{state.item=i;state.opt=0;save();render();})));
+  box.appendChild(row);
+
+  const it=list[state.item];
+  if(it.obi){
+    if(state.opt>=it.obi.opts.length) state.opt=0;
+    const p=document.createElement("p"); p.className="sub"; p.textContent="仕立方法"; box.appendChild(p);
+    const r2=document.createElement("div"); r2.className="chips"; r2.setAttribute("role","group"); r2.setAttribute("aria-label","仕立方法");
+    it.obi.opts.forEach((o,i)=>r2.appendChild(chip(o.label, i===state.opt, ()=>{state.opt=i;save();render();})));
+    box.appendChild(r2);
+  }
+  renderResult(it);
+}
+
+function totalBox(cls, label, v){
+  return `<div class="tot ${cls}"><div class="lab">${label}</div>`+
+    (v==null ? `<div class="val na">設定なし</div>` : `<div class="val">${yen(v)}<span class="yen">円</span><span class="tax">税抜</span></div><div class="incl">税込 <b>${yen(Math.round(v*1.1))}</b>円</div>`)+`</div>`;
+}
+
+function renderResult(it){
+  const d=DATA[state.cat]; let html="";
+  if(it.obi){
+    const o=it.obi.opts[state.opt];
+    html+=`<h2>${it.name}<small>${d.cat}・${o.label}</small></h2>`;
+    html+=`<div class="totals">${totalBox("k1","海外合計",null)}${totalBox("k2","国内合計",o.total)}</div>`;
+    html+=`<div class="guard"><span>きららガード（５年保証）</span><b>${yen(it.obi.guard)}円</b></div>`;
+    html+=`<details><summary>内訳を見る</summary><div class="tbl"><table><thead><tr><th>項目</th><th>国内</th></tr></thead><tbody>`+
+      o.parts.map(p=>`<tr><td>${p[0]}</td><td>${yen(p[1])}</td></tr>`).join("")+
+      `<tr class="sum"><td>国内合計</td><td>${yen(o.total)}</td></tr></tbody></table></div></details>`;
+  } else {
+    const [name,kai,koku,extras,,,guard]=it.row;
+    const sum=extras.reduce((a,b)=>a+b,0), tKai=kai+sum, tKoku=koku+sum;
+    html+=`<h2>${name}<small>${d.cat}</small></h2>`;
+    html+=`<div class="totals">${totalBox("k1","海外合計",tKai)}${totalBox("k2","国内合計",tKoku)}</div>`;
+    html+=`<div class="guard"><span>きららガード（５年保証）</span><b>${yen(guard)}円</b></div>`;
+    let rows=`<tr><td>仕立代</td><td>${yen(kai)}</td><td>${yen(koku)}</td></tr>`;
+    it.cols.forEach((c,i)=>{ if(extras[i]){ rows+=`<tr><td>${c}</td><td>${yen(extras[i])}</td><td>${yen(extras[i])}</td></tr>`; } });
+    rows+=`<tr class="sum"><td>合計</td><td>${yen(tKai)}</td><td>${yen(tKoku)}</td></tr>`;
+    html+=`<details><summary>内訳を見る</summary><div class="tbl"><table><thead><tr><th>項目</th><th>海外</th><th>国内</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+    html+=`</details>`;
+  }
+  if(d.note) html+=`<p class="note">${d.note}</p>`;
+  $("out").innerHTML=`<div class="result">${html}</div>`;
+}
+render();
+
+})();
+</script>
+<script>
+
+(function(){
+  const heightEl = document.getElementById('height');
+  const hipEl = document.getElementById('hip');
+  const bustEl = document.getElementById('bust');
+  const yukiCheck = document.getElementById('yukiOverrideCheck');
+  const yukiOverrideEl = document.getElementById('yukiOverride');
+  const resultBody = document.getElementById('resultBody');
+  const noteBlock = document.getElementById('noteBlock');
+  const svg = document.getElementById('diagram');
+
+  let sodetakeStyle = 'casual';
+
+  // --- 洋服サイズ 早見プリセット（一般的な目安。実寸で上書き推奨） ---
+  // JP: 身長・バスト・ヒップの目安まで含む号数早見（従来どおり）
+  // US/UK/フランス/ドイツ: 国際的な婦人服サイズ表からのバスト・ヒップの目安（身長は連動しないため別途入力）
+  const SYSTEMS = {
+    jp: {
+      unit:'号', hasHeight:true,
+      hint:'号数はおおよその身長・バスト・ヒップの目安です。実寸がわかれば下の欄で書き換えてください。',
+      presets:[
+        {label:'5号 / S', h:152, b:77, hip:84},
+        {label:'7号 / S〜M', h:155, b:80, hip:87},
+        {label:'9号 / M', h:158, b:83, hip:90},
+        {label:'11号 / M〜L', h:160, b:87, hip:94},
+        {label:'13号 / L', h:162, b:91, hip:98},
+        {label:'15号 / LL', h:164, b:95, hip:102},
+      ]
+    },
+    us: {
+      unit:'US', hasHeight:false,
+      hint:'US表記はバスト・ヒップの目安のみです（身長とは連動しません）。身長は上の欄に別途入力してください。',
+      presets:[
+        {label:'US 0', b:76.5, hip:85.5},
+        {label:'US 2', b:79.5, hip:89},
+        {label:'US 4', b:83.5, hip:92.5},
+        {label:'US 6', b:87.5, hip:96},
+        {label:'US 8', b:91.5, hip:99.5},
+        {label:'US 10', b:95.5, hip:103},
+        {label:'US 12', b:100, hip:106.5},
+        {label:'US 14', b:105, hip:110},
+        {label:'US 16', b:110, hip:113.5},
+        {label:'US 18', b:115, hip:117},
+      ]
+    },
+    uk: {
+      unit:'UK', hasHeight:false,
+      hint:'UK表記はバスト・ヒップの目安のみです（身長とは連動しません）。身長は上の欄に別途入力してください。',
+      presets:[
+        {label:'UK 4', b:76.5, hip:85.5},
+        {label:'UK 6', b:79.5, hip:89},
+        {label:'UK 8', b:83.5, hip:92.5},
+        {label:'UK 10', b:87.5, hip:96},
+        {label:'UK 12', b:91.5, hip:99.5},
+        {label:'UK 14', b:95.5, hip:103},
+        {label:'UK 16', b:100, hip:106.5},
+        {label:'UK 18', b:105, hip:110},
+        {label:'UK 20', b:110, hip:113.5},
+        {label:'UK 22', b:115, hip:117},
+      ]
+    },
+    fr: {
+      unit:'FR', hasHeight:false,
+      hint:'フランスサイズはバスト・ヒップの目安のみです（身長とは連動しません）。身長は上の欄に別途入力してください。フランス表記はベルギー・スペイン・ポルトガルでも使われます。',
+      presets:[
+        {label:'FR 32', b:76.5, hip:85.5},
+        {label:'FR 34', b:79.5, hip:89},
+        {label:'FR 36', b:83.5, hip:92.5},
+        {label:'FR 38', b:87.5, hip:96},
+        {label:'FR 40', b:91.5, hip:99.5},
+        {label:'FR 42', b:95.5, hip:103},
+        {label:'FR 44', b:100, hip:106.5},
+        {label:'FR 46', b:105, hip:110},
+        {label:'FR 48', b:110, hip:113.5},
+        {label:'FR 50', b:115, hip:117},
+      ]
+    },
+    de: {
+      unit:'DE', hasHeight:false,
+      hint:'ドイツサイズはバスト・ヒップの目安のみです（身長とは連動しません）。身長は上の欄に別途入力してください。ドイツ表記は同じ体格でもフランス表記より2番小さい数字になります（例：フランス38＝ドイツ36）。オーストリア・オランダ・北欧・スイスでも使われます。',
+      presets:[
+        {label:'DE 30', b:76.5, hip:85.5},
+        {label:'DE 32', b:79.5, hip:89},
+        {label:'DE 34', b:83.5, hip:92.5},
+        {label:'DE 36', b:87.5, hip:96},
+        {label:'DE 38', b:91.5, hip:99.5},
+        {label:'DE 40', b:95.5, hip:103},
+        {label:'DE 42', b:100, hip:106.5},
+        {label:'DE 44', b:105, hip:110},
+        {label:'DE 46', b:110, hip:113.5},
+        {label:'DE 48', b:115, hip:117},
+      ]
+    },
+    intl: {
+      unit:'', hasHeight:false,
+      hint:'国際サイズ（XS〜XL）はバスト・ヒップの目安のみです（身長とは連動しません）。身長は上の欄に別途入力してください。US/UK/フランス/ドイツの2サイズ分をまとめた区分です。',
+      presets:[
+        {label:'XXS', b:74, hip:82},
+        {label:'XS', b:79.5, hip:89},
+        {label:'S', b:85.5, hip:94.25},
+        {label:'M', b:93.5, hip:101.25},
+        {label:'L', b:102.5, hip:108.25},
+        {label:'XL', b:112.5, hip:115.25},
+        {label:'XXL', b:120, hip:122},
+      ]
+    },
+  };
+
+  const presetWrap = document.getElementById('presets');
+  const presetHint = document.getElementById('presetHint');
+  const systemTabs = document.getElementById('systemTabs');
+  let currentSystem = 'jp';
+
+  function renderPresets(){
+    const sys = SYSTEMS[currentSystem];
+    presetHint.textContent = sys.hint;
+    presetWrap.innerHTML = '';
+    sys.presets.forEach(p=>{
+      const b=document.createElement('button');
+      b.textContent=p.label;
+      b.addEventListener('click',()=>{
+        if(sys.hasHeight) heightEl.value=p.h;
+        bustEl.value=p.b; hipEl.value=p.hip;
+        [...presetWrap.children].forEach(c=>c.classList.remove('active'));
+        b.classList.add('active');
+        compute();
+      });
+      presetWrap.appendChild(b);
+    });
+  }
+  renderPresets();
+
+  systemTabs.addEventListener('click', (e)=>{
+    const btn = e.target.closest('button');
+    if(!btn) return;
+    currentSystem = btn.dataset.sys;
+    [...systemTabs.children].forEach(c=>c.classList.remove('active'));
+    btn.classList.add('active');
+    renderPresets();
+  });
+
+  document.getElementById('style-toggle').addEventListener('click',(e)=>{
+    const btn = e.target.closest('button');
+    if(!btn) return;
+    sodetakeStyle = btn.dataset.style;
+    [...btn.parentElement.children].forEach(c=>c.classList.remove('active'));
+    btn.classList.add('active');
+    compute();
+  });
+
+  yukiCheck.addEventListener('change',()=>{
+    yukiOverrideEl.disabled = !yukiCheck.checked;
+    compute();
+  });
+
+  [heightEl,hipEl,bustEl,yukiOverrideEl].forEach(el=>el.addEventListener('input',compute));
+
+  // 鯨尺換算 1尺 = 37.8cm = 10寸、1寸 = 10分
+  function toShaku(cm){
+    const shakuTotal = cm/37.8;
+    let shaku = Math.floor(shakuTotal);
+    let sunTotal = (shakuTotal - shaku)*10;
+    let sun = Math.floor(sunTotal);
+    let bu = Math.round((sunTotal - sun)*10);
+    if(bu>=10){bu=0; sun+=1;}
+    if(sun>=10){sun=0; shaku+=1;}
+    let out='';
+    if(shaku>0) out += shaku+'尺';
+    if(sun>0 || shaku>0) out += sun+'寸';
+    out += bu+'分';
+    return out;
+  }
+
+  function compute(){
+    const height = parseFloat(heightEl.value)||0;
+    const hip = parseFloat(hipEl.value)||0;
+
+    const mitake = height;                 // 身丈 ≒ 身長（許容 ±5cm）
+    let yuki = height*0.4+4;                // 裄 目安（身長155→66cm, 160→68cmの実測目安値から算出）
+    if(yukiCheck.checked){
+      yuki = parseFloat(yukiOverrideEl.value)||yuki;
+    }
+    const sodetake = sodetakeStyle==='formal' ? 50 : 49;
+    const maehaba = hip/4 + 1;              // 前幅
+    const ushirohaba = hip/4 + 6;           // 後幅
+    const okumihaba = 15;                   // 衽幅（ヒップ〜100cm程度まで固定）
+    const nagajuban = height*0.85;          // 長襦袢 身丈の目安
+    const hipCheck = maehaba + ushirohaba*2 + 13; // 検算：この身幅で合うヒップ目安
+
+    const rows = [
+      ['身丈（みたけ）', mitake, '±5cm'],
+      ['裄（ゆき）'+(yukiCheck.checked?'　※実測値':''), yuki, '±3cm'],
+      ['袖丈（そでたけ）', sodetake, sodetakeStyle==='formal'?'訪問着・留袖の目安':'普段着・小紋の目安'],
+      ['前幅（まえはば）', maehaba, ''],
+      ['後幅（うしろはば）', ushirohaba, ''],
+      ['衽幅（おくみはば）', okumihaba, '固定値（目安）'],
+      ['長襦袢 身丈（参考）', nagajuban, '身丈×0.85'],
+    ];
+
+    resultBody.innerHTML = rows.map(r=>{
+      return `<tr><th>${r[0]}</th><td>
+        <div class="val">${r[1].toFixed(1)}cm</div>
+        <div class="shaku">${toShaku(r[1])}</div>
+        ${r[2]?`<div class="tol">${r[2]}</div>`:''}
+      </td></tr>`;
+    }).join('');
+
+    noteBlock.innerHTML = `
+      <p><b>検算の目安：</b>この前幅・後幅で仕立てた場合、ヒップ<b>${hipCheck.toFixed(1)}cm</b>前後の方にちょうど良い計算になります（入力ヒップ ${hip}cm との差は着付けで多少調整できます）。</p>
+      <p><b>裄について：</b>裄は体格差が大きく出る部位です。可能な場合は「首の後ろの付け根 → 肩山 → 手首のくるぶし」を実測し、左側のチェックから入力してください。</p>
+      <p class="warn">※本ツールの数値はすべて一般的な早見計算による目安です。実際のお仕立て・お誂えの際は、必ず呉服店・和裁士による実寸採寸のうえご確認ください。</p>
+    `;
+
+    drawDiagram({mitake, yuki, sodetake, maehaba, ushirohaba, okumihaba});
+    renderSizeTable(height);
+  }
+
+  // --- 03: 全サイズ早見表 ---
+  const JP_SIZES = [
+    {label:'5号(S)', h:152, hip:84},
+    {label:'7号(S〜M)', h:155, hip:87},
+    {label:'9号(M)', h:158, hip:90},
+    {label:'11号(M〜L)', h:160, hip:94},
+    {label:'13号(L)', h:162, hip:98},
+    {label:'15号(LL)', h:164, hip:102},
+  ];
+  const INTL_SIZES = [
+    {us:'0',uk:'4',fr:'32',de:'30', letter:'XXS', hip:85.5},
+    {us:'2',uk:'6',fr:'34',de:'32', letter:'XS', hip:89},
+    {us:'4',uk:'8',fr:'36',de:'34', letter:'S', hip:92.5},
+    {us:'6',uk:'10',fr:'38',de:'36', letter:'S', hip:96},
+    {us:'8',uk:'12',fr:'40',de:'38', letter:'M', hip:99.5},
+    {us:'10',uk:'14',fr:'42',de:'40', letter:'M', hip:103},
+    {us:'12',uk:'16',fr:'44',de:'42', letter:'L', hip:106.5},
+    {us:'14',uk:'18',fr:'46',de:'44', letter:'L', hip:110},
+    {us:'16',uk:'20',fr:'48',de:'46', letter:'XL', hip:113.5},
+    {us:'18',uk:'22',fr:'50',de:'48', letter:'XL', hip:117},
+  ];
+  const jpSizeBody = document.getElementById('jpSizeBody');
+  const intlSizeBody = document.getElementById('intlSizeBody');
+  const refHeightLabel = document.getElementById('refHeightLabel');
+
+  function sizeRow(height, hip){
+    const mitake = height;
+    const yuki = height*0.4+4;
+    const sodetake = sodetakeStyle==='formal' ? 50 : 49;
+    const maehaba = hip/4+1;
+    const ushirohaba = hip/4+6;
+    return {mitake, yuki, sodetake, maehaba, ushirohaba};
+  }
+
+  function renderSizeTable(currentHeight){
+    refHeightLabel.textContent = currentHeight.toFixed(0);
+
+    jpSizeBody.innerHTML = JP_SIZES.map(p=>{
+      const r = sizeRow(p.h, p.hip);
+      return `<tr><td>${p.label}</td><td>${p.h}cm</td>
+        <td class="dim">${r.mitake.toFixed(1)}</td>
+        <td class="dim">${r.yuki.toFixed(1)}</td>
+        <td>${r.sodetake}</td>
+        <td>${r.maehaba.toFixed(1)}</td>
+        <td>${r.ushirohaba.toFixed(1)}</td></tr>`;
+    }).join('');
+
+    intlSizeBody.innerHTML = INTL_SIZES.map(p=>{
+      const r = sizeRow(currentHeight, p.hip);
+      return `<tr><td>US ${p.us}</td><td>UK ${p.uk}</td><td>FR ${p.fr}</td><td>DE ${p.de}</td><td>${p.letter}</td>
+        <td class="dim">${r.mitake.toFixed(1)}</td>
+        <td class="dim">${r.yuki.toFixed(1)}</td>
+        <td>${r.sodetake}</td>
+        <td>${r.maehaba.toFixed(1)}</td>
+        <td>${r.ushirohaba.toFixed(1)}</td></tr>`;
+    }).join('');
+  }
+
+  function drawDiagram(d){
+    // proportional scaling for a pleasant on-screen look (not to true scale)
+    const bodyW = 120 + (d.ushirohaba-28)*3;   // 後幅の変化を反映
+    const bodyH = 260 + (d.mitake-155)*1.4;    // 身丈の変化を反映
+    const sleeveW = 70 + (d.yuki-64)*3;
+    const sleeveH = 90 + (d.sodetake-49)*4;
+
+    const cx = 210;
+    const topY = 60;
+    const bodyX = cx - bodyW/2;
+
+    const ai='#1E3FA0', shu='#E0203F', yamabuki='#F0A400', sumi='#2A2010';
+
+    svg.setAttribute('viewBox', `0 0 420 ${topY+bodyH+70}`);
+
+    svg.innerHTML = `
+      <!-- 身頃（後ろ身頃を広げた模式図） -->
+      <rect x="${bodyX}" y="${topY}" width="${bodyW}" height="${bodyH}"
+        fill="#F6F2E7" stroke="${ai}" stroke-width="2.2"/>
+
+      <!-- 背中心線 -->
+      <line x1="${cx}" y1="${topY}" x2="${cx}" y2="${topY+bodyH}" stroke="${ai}" stroke-width="1" stroke-dasharray="2 5"/>
+
+      <!-- 衿（V字） -->
+      <path d="M ${cx-26} ${topY} L ${cx} ${topY+34} L ${cx+26} ${topY}"
+        fill="none" stroke="${sumi}" stroke-width="2"/>
+
+      <!-- 左袖 -->
+      <rect x="${bodyX-sleeveW}" y="${topY+18}" width="${sleeveW}" height="${sleeveH}"
+        fill="#F6F2E7" stroke="${ai}" stroke-width="2"/>
+      <!-- 右袖 -->
+      <rect x="${bodyX+bodyW}" y="${topY+18}" width="${sleeveW}" height="${sleeveH}"
+        fill="#F6F2E7" stroke="${ai}" stroke-width="2"/>
+
+      <!-- 衽（前幅の目印・右下がりの細い帯） -->
+      <rect x="${bodyX+bodyW-14}" y="${topY+bodyH*0.55}" width="12" height="${bodyH*0.45}"
+        fill="none" stroke="${yamabuki}" stroke-width="1.4" stroke-dasharray="3 3"/>
+
+      <!-- ===== 寸法線：身丈（左端・縦） ===== -->
+      <line x1="${bodyX-sleeveW-26}" y1="${topY}" x2="${bodyX-sleeveW-26}" y2="${topY+bodyH}"
+        stroke="${shu}" stroke-width="1.3"/>
+      <line x1="${bodyX-sleeveW-32}" y1="${topY}" x2="${bodyX-sleeveW-20}" y2="${topY}" stroke="${shu}" stroke-width="1.3"/>
+      <line x1="${bodyX-sleeveW-32}" y1="${topY+bodyH}" x2="${bodyX-sleeveW-20}" y2="${topY+bodyH}" stroke="${shu}" stroke-width="1.3"/>
+      <text x="${bodyX-sleeveW-38}" y="${topY+bodyH/2}" fill="${shu}" font-size="13" font-weight="700"
+        text-anchor="middle" transform="rotate(-90 ${bodyX-sleeveW-38} ${topY+bodyH/2})">身丈 ${d.mitake.toFixed(1)}cm</text>
+
+      <!-- ===== 寸法線：裄（背中心〜袖先・上部斜め） ===== -->
+      <line x1="${cx}" y1="${topY-14}" x2="${bodyX+bodyW+sleeveW}" y2="${topY-14}"
+        stroke="${ai}" stroke-width="1.3"/>
+      <line x1="${cx}" y1="${topY-20}" x2="${cx}" y2="${topY-8}" stroke="${ai}" stroke-width="1.3"/>
+      <line x1="${bodyX+bodyW+sleeveW}" y1="${topY-20}" x2="${bodyX+bodyW+sleeveW}" y2="${topY-8}" stroke="${ai}" stroke-width="1.3"/>
+      <text x="${cx+(bodyW/2+sleeveW)/2}" y="${topY-24}" fill="${ai}" font-size="13" font-weight="700" text-anchor="middle">裄 ${d.yuki.toFixed(1)}cm</text>
+
+      <!-- ===== 寸法線：袖丈（右袖・縦） ===== -->
+      <line x1="${bodyX+bodyW+sleeveW+14}" y1="${topY+18}" x2="${bodyX+bodyW+sleeveW+14}" y2="${topY+18+sleeveH}"
+        stroke="${yamabuki}" stroke-width="1.3"/>
+      <text x="${bodyX+bodyW+sleeveW+20}" y="${topY+18+sleeveH/2}" fill="${yamabuki}" font-size="12" font-weight="700"
+        text-anchor="start" transform="rotate(90 ${bodyX+bodyW+sleeveW+20} ${topY+18+sleeveH/2})">袖丈 ${d.sodetake.toFixed(1)}cm</text>
+
+      <!-- ===== 寸法線：後幅（身頃下部・横） ===== -->
+      <line x1="${bodyX}" y1="${topY+bodyH+18}" x2="${cx}" y2="${topY+bodyH+18}" stroke="${ai}" stroke-width="1.3"/>
+      <text x="${bodyX+(cx-bodyX)/2}" y="${topY+bodyH+34}" fill="${ai}" font-size="12" font-weight="700" text-anchor="middle">後幅 ${d.ushirohaba.toFixed(1)}cm</text>
+
+      <!-- ===== 寸法線：前幅（身頃下部・横） ===== -->
+      <line x1="${cx}" y1="${topY+bodyH+18}" x2="${bodyX+bodyW}" y2="${topY+bodyH+18}" stroke="${shu}" stroke-width="1.3"/>
+      <text x="${cx+(bodyW/2)/2}" y="${topY+bodyH+34}" fill="${shu}" font-size="12" font-weight="700" text-anchor="middle">前幅 ${d.maehaba.toFixed(1)}cm</text>
+
+      <!-- 衽ラベル -->
+      <text x="${bodyX+bodyW-8}" y="${topY+bodyH*0.52}" fill="${yamabuki}" font-size="11" font-weight="700" text-anchor="end">衽幅 ${d.okumihaba}cm</text>
+    `;
+  }
+
+  compute();
+})();
+
+</script>
+<script>
+(function(){
+  var tabs=document.querySelectorAll('#nav button');
+  function show(id){
+    ['p1','p2'].forEach(function(p){document.getElementById(p).hidden=(p!==id);});
+    tabs.forEach(function(t){t.setAttribute('aria-selected',t.dataset.tab===id?'true':'false');});
+    try{localStorage.setItem('wafuku-navi-tab',id);}catch(e){}
+    window.scrollTo(0,0);
+  }
+  tabs.forEach(function(t){t.addEventListener('click',function(){show(t.dataset.tab);});});
+  var saved=null;try{saved=localStorage.getItem('wafuku-navi-tab');}catch(e){}
+  if(saved==='p2')show('p2');
+})();
+</script>
+</body>
+</html>
